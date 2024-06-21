@@ -1,0 +1,18 @@
+version: '3.4'
+
+services:
+  cowapigateway:
+    container_name: apigateway
+    image: apigateway
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 8080:8080
+    networks:
+      - cownetwork
+
+networks:
+  cownetwork:
+    external: true
+    driver: bridge
