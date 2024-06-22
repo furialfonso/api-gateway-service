@@ -1,14 +1,16 @@
-version: '3.4'
+version: '3.9'
 
 services:
-  cowapigateway:
-    container_name: apigateway
-    image: apigateway
+  cowdemo:
+    container_name: ${APPLICATION_NAME}
+    image: ${REPOSITORY}/${APPLICATION_NAME}:${SPRING_PROFILES_ACTIVE}
     build:
       context: .
       dockerfile: ./Dockerfile
     ports:
-      - 8080:8080
+      - ${EXTERNAL_PORT}:${INTERNAL_PORT}
+    env_file:
+      - .env
     networks:
       - cownetwork
 

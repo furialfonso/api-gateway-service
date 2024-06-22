@@ -1,33 +1,21 @@
 spring:
   application:
-    name: apigateway
+    name: ${APPLICATION_NAME}
   cloud:
     gateway:
       discovery:
         locator:
           enabled: true
       routes:
-        - id: demo
-          uri: lb://DEMO
+        - id: demo-service
+          uri: lb://DEMO-SERVICE
           predicates: 
             - Path=/ping
 server:
-  port: 8080
+  port: ${INTERNAL_PORT}
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://eureka:8761/eureka/
+      defaultZone: http://${EUREKA_HOST}:${EUREKA_PORT}/eureka/
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-
-#log
-logging:
-  level:
-    root: info
-    org:
-      springframework:
-        cloud:
-          gateway:
-            level: trace
-            route:
-              RouteDefinitionRouteLocator: info
