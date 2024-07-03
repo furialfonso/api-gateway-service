@@ -11,6 +11,12 @@ spring:
           uri: lb://DEMO-SERVICE
           predicates: 
             - Path=/ping
+        - id: sso-service-test
+          uri: lb://SSO-SERVICE-TEST
+          predicates: 
+            - Path=/auth/login, /auth/logout, /auth/valid-token
+  
+
 server:
   port: ${INTERNAL_PORT}
 eureka:
