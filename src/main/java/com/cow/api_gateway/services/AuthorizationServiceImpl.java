@@ -1,10 +1,10 @@
 package com.cow.api_gateway.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import com.cow.api_gateway.config.WebClientConfig;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import reactor.core.publisher.Mono;
 
@@ -13,15 +13,17 @@ public class AuthorizationServiceImpl implements IAuthorizationService {
 
   private static final String AUTHORIZATION = "Authorization";
   private static final String URI = "/auth/valid-token";
+  
+  @Value("${spring.cloud.gateway.routes[1].uri}")
+  private String path;
 
   @Autowired
-  private WebClientConfig webClient;
+  private WebClient.Builder webClientBuilder;
 
   @Override
   public Mono<Boolean> isValidToken(String token) {
-    return webClient.ssoWebClient().post().uri(URI).header(AUTHORIZATION, token)
-        .exchangeToMono(response -> {
-          return Mono.just(response.statusCode() == HttpStatus.OK);
-        });
+    return this.webClientBuilder.build().post().uri(path + URI).header(AUTHORIZATION, token).exchangeToMono(response -> {
+      return Mono.just(response.statusCode() == HttpStatus.OK);
+  });
   }
 }

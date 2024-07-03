@@ -11,12 +11,16 @@ spring:
           uri: lb://DEMO-SERVICE
           predicates: 
             - Path=/ping
-        - id: sso-service-test
+        - id: authentication
           uri: lb://SSO-SERVICE-TEST
           predicates: 
             - Path=/auth/login, /auth/logout, /auth/valid-token
-  
-
+        - id: authorization
+          uri: lb://SSO-SERVICE-TEST
+          predicates:
+            - Path=/users/**
+          filters:
+          - name: AuthorizationFilter
 server:
   port: ${INTERNAL_PORT}
 eureka:
