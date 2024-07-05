@@ -2,6 +2,7 @@ services:
   cowdemo:
     container_name: ${APPLICATION_NAME}
     image: ${REPOSITORY}/${APPLICATION_NAME}:${SPRING_PROFILES_ACTIVE}
+    restart: unless-stopped
     build:
       context: .
       dockerfile: ./Dockerfile
