@@ -1,20 +1,19 @@
 # API-GATEWAY-SERVICE
 
-Application created in Spring Boot and composed of Spring Cloud Gateway. This app is in charge for authorization and load balancing by each container.
+Application created in Spring Boot and composed of Spring Cloud Gateway. This app is in charge for authorization.
 
-**Author**
+### Author
   - *Andres Felipe Alfonso Ortiz*
 
-**Technologies**
+#### Technologies
   - *Java*: programming language.
   - *Spring Boot*: framework.
   - *Spring Cloud Gateway*: Dependenci for service api gateway.
   - *Gin*: framework for rest applications.
   - *Docker*: application's contenerization.
-  - *Eureka client*: application directory and load balancing
 
 
-**Spring Cloud Gateway**
+#### Spring Cloud Gateway
   - Documentation
     https://docs.spring.io/spring-cloud-gateway/docs/current/reference/html/
   - Configuration
