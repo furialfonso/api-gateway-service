@@ -8,24 +8,18 @@ spring:
           enabled: true
       routes:
         - id: demo-service
-          uri: lb://DEMO-SERVICE
+          uri: http://DEMO-SERVICE
           predicates: 
             - Path=/ping
         - id: authentication
-          uri: lb://SSO-SERVICE-TEST
+          uri: http://SSO-SERVICE-TEST
           predicates: 
             - Path=/auth/login, /auth/logout, /auth/valid-token
         - id: authorization
-          uri: lb://SSO-SERVICE-TEST
+          uri: http://SSO-SERVICE-TEST
           predicates:
             - Path=/users/**
           filters:
           - name: AuthorizationFilter
 server:
   port: ${INTERNAL_PORT}
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://${EUREKA_HOST}:${EUREKA_PORT}/eureka/
-  instance:
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
