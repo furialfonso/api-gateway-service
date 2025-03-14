@@ -1,19 +1,16 @@
-package com.cow.api_gateway.custom_filter;
+package com.cow.apigateway.filters;
 
+import com.cow.apigateway.filters.dto.Config;
+import com.cow.apigateway.services.IAuthorizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-
-import com.cow.api_gateway.services.IAuthorizationService;
-
-import lombok.Data;
 import reactor.core.publisher.Mono;
 
-
 @Component
-public class AuthorizationFilter extends AbstractGatewayFilterFactory<AuthorizationFilter.Config> {
+public class AuthorizationFilter extends AbstractGatewayFilterFactory<Config> {
 
   public AuthorizationFilter() {
     super(Config.class);
@@ -21,8 +18,7 @@ public class AuthorizationFilter extends AbstractGatewayFilterFactory<Authorizat
 
   private static final String AUTHORIZATION = "Authorization";
 
-  @Autowired
-  private IAuthorizationService authorizationService;
+  @Autowired private IAuthorizationService authorizationService;
 
   public GatewayFilter apply(Config config) {
     return (exchange, chain) -> {
@@ -32,18 +28,14 @@ public class AuthorizationFilter extends AbstractGatewayFilterFactory<Authorizat
         return Mono.empty();
       }
       Mono<Boolean> isValid = authorizationService.isValidToken(config.getToken());
-      return isValid.flatMap(isValidToken -> {
-        if (!isValidToken) {
-          exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-          return Mono.empty();
-        }
-        return chain.filter(exchange);
-      });
+      return isValid.flatMap(
+          isValidToken -> {
+            if (!isValidToken) {
+              exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+              return Mono.empty();
+            }
+            return chain.filter(exchange);
+          });
     };
-  }
-
-  @Data
-  public static class Config {
-    private String token;
   }
 }

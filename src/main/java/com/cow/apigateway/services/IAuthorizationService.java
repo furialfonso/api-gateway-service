@@ -1,4 +1,4 @@
-package com.cow.api_gateway.services;
+package com.cow.apigateway.services;
 
 import reactor.core.publisher.Mono;
 

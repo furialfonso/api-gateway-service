@@ -1,4 +1,4 @@
-package com.cow.api_gateway.config;
+package com.cow.apigateway.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,5 +11,4 @@ public class WebClientConfig {
   public WebClient.Builder webClient() {
     return WebClient.builder();
   }
-
 }
